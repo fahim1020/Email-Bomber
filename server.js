@@ -12,6 +12,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files from src folder
+app.use(express.static("src"));
+
+// Serve index.html on root route
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/src/index.html");
+});
+
 //SMTP setup
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -26,9 +34,9 @@ async function sendMail(to, subject, text, emailNumber) {
   try {
     //Mail options for send Mail
     let mailOptions = {
-      from: "hackerfunworld@gmail.com",
+      from: "techgamingbangla@gmail.com",
       to: to,
-      subject: `${subject} ${emailNumber}`, // Append email number to the subject
+      subject: `${subject} ${emailNumber}`,
       text: text,
     };
 
@@ -58,8 +66,8 @@ app.post("/api/mail/send", async (req, res) => {
       Array.from(
         { length: numEmail },
         async (_, index) =>
-          await sendMail(receiverEmail, subject, message, index + 1) // Increment index by 1 to start from 1
-      )
+          await sendMail(receiverEmail, subject, message, index + 1), 
+      ),
     );
 
     // All emails sent successfully

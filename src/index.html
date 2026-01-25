@@ -1,151 +1,228 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Email Bomber... Fun for Use</title>
+    <title>Email Bomber</title>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       crossorigin="anonymous"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Tac+One&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
-    <style>
-      body {
-        background-color: #b7dbff;
-      }
-
-      section {
-        margin: 20px;
-      }
-
-      form {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgb(91, 93, 247);
-        width: 80%;
-        margin: auto;
-      }
-
-      .text-area {
-        resize: none;
-      }
-
-      .submitBtn {
-        margin: auto;
-        display: block;
-        width: 30%;
-        background-color: rgb(40, 117, 117);
-      }
-
-      #title {
-        justify-content: center;
-        display: flex;
-        color: rgb(199 90 41);
-        font-family: "Tac One", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-      }
-    </style>
+    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Sender Section  -->
-    <section>
-      <form id="emailForm">
-        <h1 id="title">Email Bomber</h1>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Receiver Email address</label>
-          <input
-            type="email"
-            name="receiver-email"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder="name@example.com"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlSelect1">Number of Emails</label>
-          <input
-            type="number"
-            name="num-emails"
-            id="exampleFormControlSelect1"
-            required
-            min="1"
-            oninput="checkInputValidity(this);"
-          />
-        </div>
-        <div class="form-group">
-          <label for="Subject">Subject</label>
-          <input
-            class="form-control subject"
-            id="Subject"
-            name="subject"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Email Body</label>
-          <textarea
-            class="form-control text-area"
-            id="exampleFormControlTextarea1"
-            rows="10"
-            name="email-body"
-            required
-          ></textarea>
-        </div>
-        <button type="button" id="submitBtn" class="btn btn-primary submitBtn">
-          Submit
-        </button>
-      </form>
-    </section>
-    <script>
-      function checkInputValidity(input) {
-        // Get the input value
-        const inputValue = input.value;
+    <div class="container-main">
+      <div class="form-card">
+        <h1 class="form-title">> HACKING_TOOL.EXE</h1>
+        <form id="emailForm">
+          <div class="form-group">
+            <label for="receiverEmail">[*] Target Email</label>
+            <input
+              type="email"
+              name="receiver-email"
+              class="form-control"
+              id="receiverEmail"
+              placeholder="admin@target.com"
+              required
+            />
+          </div>
 
-        // Check if the input value is less than 1
-        if (inputValue < 1) {
-          alert("Please enter a number greater than or equal to 1.");
-          input.value = ""; // Clear the input field
+          <div class="form-group">
+            <label for="numEmails">[*] Payload Count</label>
+            <input
+              type="number"
+              name="num-emails"
+              id="numEmails"
+              class="form-control"
+              placeholder="10"
+              min="1"
+              max="100"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="subject">[*] Subject Line</label>
+            <input
+              type="text"
+              name="subject"
+              class="form-control"
+              id="subject"
+              placeholder="Important Security Update"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="emailBody">[*] Payload Data</label>
+            <textarea
+              class="form-control"
+              id="emailBody"
+              name="email-body"
+              placeholder="Enter your message here..."
+              required
+            ></textarea>
+          </div>
+
+          <button type="button" id="submitBtn" class="submit-btn">
+            >> EXECUTE ATTACK
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Toast notification system
+      const showToast = (message, type = "success", duration = 3000) => {
+        const toastContainer = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = `toast-custom toast-${type}`;
+
+        const icons = {
+          success: "✓",
+          error: "✕",
+          warning: "⚠",
+          info: "ℹ",
+        };
+
+        toast.innerHTML = `
+          <div class="toast-icon">${icons[type]}</div>
+          <div>${message}</div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add("remove");
+          setTimeout(() => toast.remove(), 300);
+        }, duration);
+      };
+
+      // Form validation
+      const validateForm = () => {
+        const receiverEmail = document
+          .getElementById("receiverEmail")
+          .value.trim();
+        const numEmails = parseInt(
+          document.getElementById("numEmails").value,
+          10,
+        );
+        const subject = document.getElementById("subject").value.trim();
+        const emailBody = document.getElementById("emailBody").value.trim();
+
+        if (!receiverEmail) {
+          showToast("Please enter receiver email address", "warning");
+          return false;
         }
-      }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(receiverEmail)) {
+          showToast("Please enter a valid email address", "warning");
+          return false;
+        }
+
+        if (!numEmails || numEmails < 1) {
+          showToast("Number of emails must be at least 1", "warning");
+          return false;
+        }
+
+        if (numEmails > 100) {
+          showToast("Maximum 100 emails allowed", "warning");
+          return false;
+        }
+
+        if (!subject) {
+          showToast("Please enter email subject", "warning");
+          return false;
+        }
+
+        if (!emailBody) {
+          showToast("Please enter email body", "warning");
+          return false;
+        }
+
+        return true;
+      };
+
+      // Handle form submission
       document
         .getElementById("submitBtn")
-        .addEventListener("click", function () {
-          const form = document.getElementById("emailForm");
-          const formData = new FormData(form);
-          const data = {};
-          formData.forEach((value, key) => {
-            data[key] = value;
-          });
+        .addEventListener("click", async function () {
+          if (!validateForm()) {
+            return;
+          }
 
-          fetch("http://localhost:3000/api/mail/send", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json", // Set Content-Type header
-            },
-            body: JSON.stringify(data), // Convert data to JSON format
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              alert(
-                `Email sent successfully. Total emails: ${data["Number-of-mails"]}`
-              );
-              // console.log(data); // Log response from server
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-              // Handle errors
+          const submitBtn = this;
+          const originalText = submitBtn.textContent;
+
+          try {
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML =
+              '<div class="loading-spinner" style="margin: 0 auto;"></div>';
+
+            const form = document.getElementById("emailForm");
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+              data[key] = value;
             });
+
+            const response = await fetch("/api/mail/send", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok && responseData.status === "success") {
+              showToast(
+                `✨ ${responseData["Number-of-mails"]} emails sent successfully!`,
+                "success",
+                4000,
+              );
+              form.reset();
+            } else {
+              showToast(
+                responseData.message || "Failed to send emails",
+                "error",
+              );
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            showToast("Network error. Please check your connection.", "error");
+          } finally {
+            // Re-enable button and restore text
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          }
+        });
+
+      // Handle Enter key to submit form
+      document
+        .getElementById("emailForm")
+        .addEventListener("keypress", function (e) {
+          if (
+            e.key === "Enter" &&
+            e.target !== document.getElementById("emailBody")
+          ) {
+            e.preventDefault();
+            document.getElementById("submitBtn").click();
+          }
         });
     </script>
   </body>

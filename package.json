@@ -1,6 +1,6 @@
 {
   "name": "email-bomber",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Email bomber for Fun with Friends. Please Don't Miss use. ",
   "main": "server.js",
   "scripts": {
