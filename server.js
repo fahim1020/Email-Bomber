@@ -12,13 +12,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from src folder
-app.use(express.static("src"));
+const path = require("path");
 
-// Serve index.html on root route
+// Serve static files from src folder (absolute)
+app.use(express.static(path.join(__dirname, "src")));
+
+// Serve index.html on root route (absolute)
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/src/index.html");
+  res.sendFile(path.join(__dirname, "src", "index.html"));
 });
+
 
 //SMTP setup
 let transporter = nodemailer.createTransport({
